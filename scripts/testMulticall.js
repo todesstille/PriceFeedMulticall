@@ -28,7 +28,7 @@ async function main() {
     await hre.ethers.utils.parseEther("1")
   ];
 
-  const feed = await hre.ethers.getContractAt("PricefeedMulticall", "0x51Ae38D59A18a2789b3714967B76103A665488a2");
+  const feed = await hre.ethers.getContractAt("PricefeedMulticall", "0x69D93807C92413465445ccbB6B5D83EfBD1B36a4");
 
   console.log(await feed.callStatic.getNormalizedPriceOutUSDBatch(addresses, amounts));
 }

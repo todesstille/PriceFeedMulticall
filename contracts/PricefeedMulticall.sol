@@ -9,9 +9,15 @@ import "./interfaces/IPricefeedMulticall.sol";
 
 contract PricefeedMulticall is IPricefeedMulticall {
     IPriceFeed public priceFeed;
+    uint256 public callGasLimit;
 
     constructor(address _priceFeed) {
         priceFeed = IPriceFeed(_priceFeed);
+        callGasLimit = 20000000;
+    }
+
+    function setGasLimit(uint256 gasLimit) external {
+        callGasLimit = gasLimit;
     }
 
     function getNormalizedPriceOutUSDBatch(
@@ -26,7 +32,7 @@ contract PricefeedMulticall is IPricefeedMulticall {
 
         for (uint256 i = 0; i < length; i++) {
 
-            try priceFeed.getNormalizedPriceOutUSD(inTokens[i], amountsIn[i]) returns (uint256 amountOut, IPriceFeed.SwapPath memory path) {
+            try priceFeed.getNormalizedPriceOutUSD{gas: callGasLimit}(inTokens[i], amountsIn[i]) returns (uint256 amountOut, IPriceFeed.SwapPath memory path) {
                 amountsOut[i] = amountOut;
                 paths[i] = path;
             } catch {}
